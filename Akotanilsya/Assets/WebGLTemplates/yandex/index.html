@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Unity WebGL Player | {{{ PRODUCT_NAME }}}</title>
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+  <link rel="stylesheet" href="TemplateData/style.css">
+  <script src="https://yandex.ru/games/sdk/v2"></script>
+</head>
+<body>
+  <script>
+    var sdk = null;
+    var lang = null;
+    YaGames.init()
+    .then(ysdk => {
+      console.log('Yandex SDK initialized');
+      sdk = ysdk;
+      auth();
+      initLederboard();
+      
+      sdk.adv.showFullscreenAdv();
+
+      });
+    var player;
+
+    function initPlayer() {
+      return sdk.getPlayer().then(_player => {
+        player = _player;
+
+        return player;
+      });
+    }
+    function auth(){
+      initPlayer().then(_player => {
+        if (_player.getMode() === 'lite') {
+            // Игрок не авторизован.
+            sdk.auth.openAuthDialog().then(() => {
+                    // Игрок успешно авторизован
+                    initPlayer().catch(err => {
+                        // Ошибка при инициализации объекта Player.
+                      });
+                  }).catch(() => {
+                    // Игрок не авторизован.
+                  });
+                }
+              }).catch(err => {
+        // Ошибка при инициализации объекта Player.
+      });
+    }
+    // подключение лидерборда
+    var lb;
+    function initLederboard(){
+      sdk.getLeaderboards()
+        .then(_lb => {
+          lb = _lb;
+          console.log('Leaderboard initialized');
+        });
+    }
+    
+    
+    function setLederboard(best){
+      sdk.getLeaderboards()
+        .then(lb => {
+          lb.setLeaderboardScore('leader', best);
+        });
+    } 
+  </script>
+  <script>
+
+    //add ksimaster
+    function showAdInterstitial() {
+      console.log('show Ad Interstitial');
+      
+      sdk.adv.showFullscreenAdv();
+      
+    }
+    
+    function showAdReward() {
+      console.log('show Ad Reward');
+      sdk.adv.showRewardedVideo({callbacks:{}});
+    }
+  </script>
+  <div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} style="width: 99vw; height: 99vh; background: #FFFFFF"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-logo"></div>
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+    var config = {
+      dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
+      frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
+      codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+      #if MEMORY_FILENAME
+      memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}",
+      #endif
+      #if SYMBOLS_FILENAME
+      symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
+      #endif
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "{{{ COMPANY_NAME }}}",
+      productName: "{{{ PRODUCT_NAME }}}",
+      productVersion: "{{{ PRODUCT_VERSION }}}",
+    };
+
+    var container = document.querySelector("#unity-container");
+    var canvas = document.querySelector("#unity-canvas");
+    var loadingBar = document.querySelector("#unity-loading-bar");
+    var progressBarFull = document.querySelector("#unity-progress-bar-full");
+
+      // By default Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+
+		//canvas.style.width = "{{{ WIDTH }}}px";
+		//canvas.style.height = "{{{ HEIGHT }}}px";
+		
+    #if BACKGROUND_FILENAME
+    canvas.style.background = "url('" + buildUrl + "/{{{ BACKGROUND_FILENAME.replace(/'/g, '%27') }}}') center / cover";
+    #endif
+    loadingBar.style.display = "block";
+      //add ksimaster, сохраняем игру в переменную
+      var myGameInstance = null;
+
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          myGameInstance = unityInstance;
+          loadingBar.style.display = "none";
+        }).catch((message) => {
+        });
+      };
+
+      document.body.appendChild(script);
+    </script>
+<script>
+
+</script>
+
+  </body>
+  </html>
