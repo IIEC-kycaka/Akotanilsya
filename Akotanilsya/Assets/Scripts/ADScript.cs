@@ -52,6 +52,6 @@ public class ADScript : MonoBehaviour
     private void Update()
     {
         //if (sliderHome.value <= sliderHome.minValue) ShowAdInterstitial();
-        /*if(panelGameOver.activeSelf) */ ShowAdInterstitial();
+        /*if(panelGameOver.activeSelf) */// ShowAdInterstitial();
     }
 }
