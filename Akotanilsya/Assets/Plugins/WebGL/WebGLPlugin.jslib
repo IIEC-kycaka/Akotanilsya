@@ -13,6 +13,14 @@ mergeInto(LibraryManager.library, {
    SetLeder: function (value) {
       setLederboard(value);
    },
+   // Function GetAuth(add ksimaster)
+  // GetAuth: function () {
+      
+   //},
+   // Function SetAuth(add ksimaster)
+   SetAuth: function () {
+      setAuth();
+   },
    // Function InterstitialFunction (add ksimaster)
    InterstitialFunction: function () {
       // Show a message as an alert

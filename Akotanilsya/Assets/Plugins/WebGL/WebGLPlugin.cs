@@ -11,6 +11,10 @@ public static class WebGLPluginJS
     [DllImport("__Internal")]
     public static extern void SetLeder(int best);
     // Importing "Hello"
+    //Importing SetAuth
+    [DllImport("__Internal")]
+    public static extern void SetAuth();
+    // Importing "Hello"
     [DllImport("__Internal")]
     public static extern void Hello();
     // Importing "ShareFunction" add ksimaster

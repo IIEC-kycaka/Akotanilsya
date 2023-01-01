@@ -16,8 +16,7 @@
     .then(ysdk => {
       console.log('Yandex SDK initialized');
       sdk = ysdk;
-      auth();
-      initLederboard();
+      
       
       sdk.adv.showFullscreenAdv();
 
@@ -58,7 +57,11 @@
         });
     }
     
-    
+    function setAuth(){
+      auth();
+      initLederboard();
+    }
+
     function setLederboard(best){
       sdk.getLeaderboards()
         .then(lb => {
