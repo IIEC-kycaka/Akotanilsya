@@ -5,7 +5,7 @@ using UnityEngine;
 public class Auth : MonoBehaviour
 {
     public GameObject authButton;
-    private bool isAuth = false; 
+    public bool isAuth = false; 
     void Start()
     {
         CheckAuth();

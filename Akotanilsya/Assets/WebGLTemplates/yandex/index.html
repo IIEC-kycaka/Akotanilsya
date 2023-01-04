@@ -147,7 +147,14 @@
         }).catch((message) => {
         });
       };
-
+      //cheak authorization
+      if (_player.getMode() === 'lite'){
+        myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', false);
+      } 
+      else 
+      {
+        myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', true);
+      }
       document.body.appendChild(script);
     </script>
 <script>
