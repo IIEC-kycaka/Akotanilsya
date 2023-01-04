@@ -145,6 +145,8 @@
         }).catch((message) => {
         });
       };
+      
+      document.body.appendChild(script);
       //cheak authorization
       if (_player.getMode() === 'lite'){
         myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', false);
@@ -153,7 +155,6 @@
       {
         myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', true);
       }
-      document.body.appendChild(script);
     </script>
 <script>
 
