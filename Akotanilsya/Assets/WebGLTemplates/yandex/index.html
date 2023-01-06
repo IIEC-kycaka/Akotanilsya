@@ -16,8 +16,8 @@
     .then(ysdk => {
       console.log('Yandex SDK initialized');
       sdk = ysdk;
-      initPlayer();
       sdk.adv.showFullscreenAdv();
+
       });
     var player;
 
@@ -34,11 +34,13 @@
             // Игрок не авторизован.
             sdk.auth.openAuthDialog().then(() => {
                     // Игрок успешно авторизован
+                    myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', true);
                     initPlayer().catch(err => {
                         // Ошибка при инициализации объекта Player.
                       });
                   }).catch(() => {
                     // Игрок не авторизован.
+                    //myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', false);
                   });
                 }
               }).catch(err => {
@@ -54,7 +56,25 @@
           console.log('Leaderboard initialized');
         });
     }
-    
+    function getAutorization(){
+      initPlayer().then(_player => {
+        if (_player.getMode() === 'lite') 
+        {
+          console.log('Player autorization: NO!!!' );
+          return false;
+        }
+        else
+        {
+          console.log('Player autorization: YES!!!');
+          initLederboard();
+          return true;
+        }
+              }).catch(err => {
+        // Ошибка при инициализации объекта Player.
+          console.log('Error initPlayer in function getAutorization');
+          return false;
+      });
+    }
     function setAuth(){
       auth();
       initLederboard();
@@ -147,14 +167,6 @@
       };
       
       document.body.appendChild(script);
-      //cheak authorization
-      if (_player.getMode() === 'lite'){
-        myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', false);
-      } 
-      else 
-      {
-        myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', true);
-      }
     </script>
 <script>
 

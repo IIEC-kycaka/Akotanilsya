@@ -3970,6 +3970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   authButton: {fileID: 495404016}
+  isAuth: 0
 --- !u!1 &1667350060
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,8 +10,11 @@ public static class WebGLPluginJS
     //Importing SetLeder
     [DllImport("__Internal")]
     public static extern void SetLeder(int best);
-    // Importing "Hello"
-    //Importing SetAuth
+    
+    //Importing GetAuth
+    [DllImport("__Internal")]
+    public static extern bool GetAuth();
+    // Importing SetAuth
     [DllImport("__Internal")]
     public static extern void SetAuth();
     // Importing "Hello"

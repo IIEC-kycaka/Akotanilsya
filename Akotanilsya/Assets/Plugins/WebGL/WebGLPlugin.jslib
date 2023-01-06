@@ -14,9 +14,9 @@ mergeInto(LibraryManager.library, {
       setLederboard(value);
    },
    // Function GetAuth(add ksimaster)
-  // GetAuth: function () {
-      
-   //},
+   GetAuth: function () {
+      getAutorization();
+   },
    // Function SetAuth(add ksimaster)
    SetAuth: function () {
       setAuth();
