@@ -9,84 +9,7 @@
   <script src="https://yandex.ru/games/sdk/v2"></script>
 </head>
 <body>
-  <script>
-    var sdk = null;
-    var lang = null;
-    YaGames.init()
-    .then(ysdk => {
-      console.log('Yandex SDK initialized');
-      sdk = ysdk;
-      sdk.adv.showFullscreenAdv();
-
-      });
-    var player;
-
-    function initPlayer() {
-      return sdk.getPlayer().then(_player => {
-        player = _player;
-
-        return player;
-      });
-    }
-    function auth(){
-      initPlayer().then(_player => {
-        if (_player.getMode() === 'lite') {
-            // Игрок не авторизован.
-            sdk.auth.openAuthDialog().then(() => {
-                    // Игрок успешно авторизован
-                    myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', true);
-                    initPlayer().catch(err => {
-                        // Ошибка при инициализации объекта Player.
-                      });
-                  }).catch(() => {
-                    // Игрок не авторизован.
-                    //myGameInstance.SendMessage('LevelController', 'GetDataAuthorization', false);
-                  });
-                }
-              }).catch(err => {
-        // Ошибка при инициализации объекта Player.
-      });
-    }
-    // подключение лидерборда
-    var lb;
-    function initLederboard(){
-      sdk.getLeaderboards()
-        .then(_lb => {
-          lb = _lb;
-          console.log('Leaderboard initialized');
-        });
-    }
-    function getAutorization(){
-      initPlayer().then(_player => {
-        if (_player.getMode() === 'lite') 
-        {
-          console.log('Player autorization: NO!!!' );
-          return false;
-        }
-        else
-        {
-          console.log('Player autorization: YES!!!');
-          initLederboard();
-          return true;
-        }
-              }).catch(err => {
-        // Ошибка при инициализации объекта Player.
-          console.log('Error initPlayer in function getAutorization');
-          return false;
-      });
-    }
-    function setAuth(){
-      auth();
-      initLederboard();
-    }
-
-    function setLederboard(best){
-      sdk.getLeaderboards()
-        .then(lb => {
-          lb.setLeaderboardScore('leader', best);
-        });
-    } 
-  </script>
+ 
   <script>
 
     //add ksimaster
@@ -167,7 +90,97 @@
       };
       
       document.body.appendChild(script);
+      //var message = "1";
+      //myGameInstance.SendMessage('Auth', 'CheckAuth', message);
+      //console.log('Translate true in CheckAuth');
     </script>
+    <script>
+    var sdk = null;
+    var lang = null;
+    YaGames.init()
+    .then(ysdk => {
+      console.log('Yandex SDK initialized');
+      sdk = ysdk;
+      sdk.adv.showFullscreenAdv();
+
+      });
+    var player;
+    // инициализация игрока (вызывается через другие функции)
+    function initPlayer() {
+      return sdk.getPlayer().then(_player => {
+        player = _player;
+
+        return player;
+      });
+    }
+    //функция авторизации (вызывается через другие функции)
+    function auth(){
+      initPlayer().then(_player => {
+        if (_player.getMode() === 'lite') {
+            // Игрок не авторизован.
+            sdk.auth.openAuthDialog().then(() => {
+                    // Игрок успешно авторизован
+                   // myGameInstance.SendMessage('Auth', 'CheckAuth', true);
+                    initPlayer().catch(err => {
+                        // Ошибка при инициализации объекта Player.
+                      });
+                  }).catch(() => {
+                    // Игрок не авторизован.
+                    
+                  });
+                }
+              }).catch(err => {
+        // Ошибка при инициализации объекта Player.
+      });
+    }
+    // подключение лидерборда
+    var lb;
+    function initLederboard(){
+      sdk.getLeaderboards()
+        .then(_lb => {
+          lb = _lb;
+          console.log('Leaderboard initialized');
+        });
+    }
+    //проверка авторизации
+    var isAuthorzation = null;
+    function getAutorization(){
+      initPlayer().then(_player => {
+        if (_player.getMode() === 'lite') 
+        {
+          console.log('Player autorization: NO!!!' );
+         // myGameInstance.SendMessage('Auth', 'CheckAuth', false);
+         return "no";
+        }
+        else
+        {
+          console.log('Player autorization: YES!!!');
+          return "yes";
+          //myGameInstance.SendMessage('Auth', 'CheckAuth', true).catch(err => {
+        // ошибка при передаче в авторизацию положительного значения авторизации
+          //console.log('Error translate true in CheckAuth');
+      //});
+          setAuth();
+        }
+              }).catch(err => {
+        // Ошибка при инициализации объекта Player.
+          console.log('Error initPlayer in function getAutorization');
+          return "no";
+      });
+    }
+    //авторизация игрока
+    function setAuth(){
+      auth();
+      initLederboard();
+    }
+    //передача лучшего результата в лидерборд
+    function setLederboard(best){
+      sdk.getLeaderboards()
+        .then(lb => {
+          lb.setLeaderboardScore('leader', best);
+        });
+    } 
+  </script>
 <script>
 
 </script>

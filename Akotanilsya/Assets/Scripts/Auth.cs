@@ -5,36 +5,37 @@ public class Auth : MonoBehaviour
     public GameObject authButton;
     public bool isAuth = false;
 
-    //public static Auth Instance;
+    public static Auth Instance;
 
     private void Awake()
-    {/*
+    {
+        //CheckAuth();
+        
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-#if UNITY_WEBGL && !UNITY_EDITOR
-            isAuth = WebGLPluginJS.GetAuth();
-#endif
             CheckAuth();
         }
         else
         {
             Destroy(gameObject);
         }
-        */
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            isAuth = WebGLPluginJS.GetAuth();
-#endif
         
+        /*
+#if UNITY_WEBGL && !UNITY_EDITOR
+          WebGLPluginJS.GetAuth();
+#endif
+        */
     }
     void Start()
     {
-        CheckAuth();
+        authButton.SetActive(!isAuth);
+        // CheckAuth();
     }
     private void Update()
     {
+        /*
         if (PlayerPrefs.HasKey("isAuth"))
         {
             if (PlayerPrefs.GetInt("isAuth") == 1)
@@ -45,43 +46,42 @@ public class Auth : MonoBehaviour
             {
                 isAuth = false;
             }
-        }
-        CheckAuth();
+        } */
+      //  CheckAuth();
     }
 
     public void Authorization()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
     	WebGLPluginJS.SetAuth();
-        isAuth = WebGLPluginJS.GetAuth();
-#endif
-        if (isAuth)
-        {
-            PlayerPrefs.SetInt("isAuth", 1);
-        }
-        else
-        {
-            PlayerPrefs.SetInt("isAuth", 0);
-        }
         CheckAuth();
+#endif
+        authButton.SetActive(!isAuth);
+        /* if (isAuth)
+         {
+             PlayerPrefs.SetInt("isAuth", 1);
+         }
+         else
+         {
+             PlayerPrefs.SetInt("isAuth", 0);
+         }
+         */
+        // CheckAuth();
     }
 
     public void GetDataAuthorization(bool value)
     {
-        isAuth = value;
-        CheckAuth();
+       // isAuth = value;
+        //CheckAuth();
     }
 
     public void CheckAuth()
     {
-        if (isAuth)
-        {
-            authButton.SetActive(false);
-        }
-        else
-        {
-            authButton.SetActive(true);
-        }
+#if UNITY_WEBGL && !UNITY_EDITOR
+        
+        isAuth = WebGLPluginJS.GetAuth() == "yes" ? true : false;
+#endif
+        
     }
 
 

@@ -13,7 +13,7 @@ public static class WebGLPluginJS
     
     //Importing GetAuth
     [DllImport("__Internal")]
-    public static extern bool GetAuth();
+    public static extern string GetAuth();
     // Importing SetAuth
     [DllImport("__Internal")]
     public static extern void SetAuth();

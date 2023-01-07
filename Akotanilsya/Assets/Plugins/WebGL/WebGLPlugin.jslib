@@ -15,7 +15,11 @@ mergeInto(LibraryManager.library, {
    },
    // Function GetAuth(add ksimaster)
    GetAuth: function () {
-      getAutorization();
+      isAuthorzation = "yes";
+      var bufferSize = lengthBytesUTF8(isAuthorzation) + 1;
+      var buffer = _malloc(bufferSize);
+      stringToUTF8(isAuthorzation, buffer, bufferSize);
+      return buffer;
    },
    // Function SetAuth(add ksimaster)
    SetAuth: function () {
