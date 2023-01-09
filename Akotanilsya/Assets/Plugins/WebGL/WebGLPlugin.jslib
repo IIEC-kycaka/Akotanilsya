@@ -15,7 +15,14 @@ mergeInto(LibraryManager.library, {
    },
    // Function GetAuth(add ksimaster)
    GetAuth: function () {
-      isAuthorzation = "yes";
+      //var player;
+      var isAuthorzation = "no";
+        if (!(player.getMode() === 'lite')) 
+        {
+          console.log('Player autorization: YES!!!' );
+          isAuthorzation = "yes";
+         }
+     
       var bufferSize = lengthBytesUTF8(isAuthorzation) + 1;
       var buffer = _malloc(bufferSize);
       stringToUTF8(isAuthorzation, buffer, bufferSize);

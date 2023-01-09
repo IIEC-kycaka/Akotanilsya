@@ -9,13 +9,10 @@
   <script src="https://yandex.ru/games/sdk/v2"></script>
 </head>
 <body>
- 
   <script>
-
     //add ksimaster
     function showAdInterstitial() {
       console.log('show Ad Interstitial');
-      
       sdk.adv.showFullscreenAdv();
       
     }
@@ -92,7 +89,6 @@
       document.body.appendChild(script);
       //var message = "1";
       //myGameInstance.SendMessage('Auth', 'CheckAuth', message);
-      //console.log('Translate true in CheckAuth');
     </script>
     <script>
     var sdk = null;
@@ -101,8 +97,12 @@
     .then(ysdk => {
       console.log('Yandex SDK initialized');
       sdk = ysdk;
+      initPlayer();
       sdk.adv.showFullscreenAdv();
-
+      if (!(player.getMode() === 'lite')) 
+        {
+          setAuth();
+         }
       });
     var player;
     // инициализация игрока (вызывается через другие функции)
@@ -120,18 +120,26 @@
             // Игрок не авторизован.
             sdk.auth.openAuthDialog().then(() => {
                     // Игрок успешно авторизован
-                   // myGameInstance.SendMessage('Auth', 'CheckAuth', true);
                     initPlayer().catch(err => {
                         // Ошибка при инициализации объекта Player.
                       });
                   }).catch(() => {
                     // Игрок не авторизован.
-                    
                   });
                 }
               }).catch(err => {
         // Ошибка при инициализации объекта Player.
       });
+    }
+    function authTwo(){
+      sdk.auth.openAuthDialog().then(() => {
+                    // Игрок успешно авторизован
+                    initPlayer().catch(err => {
+                        // Ошибка при инициализации объекта Player.
+                      });
+                  }).catch(() => {
+                    // Игрок не авторизован.
+                  });
     }
     // подключение лидерборда
     var lb;
@@ -141,32 +149,6 @@
           lb = _lb;
           console.log('Leaderboard initialized');
         });
-    }
-    //проверка авторизации
-    var isAuthorzation = null;
-    function getAutorization(){
-      initPlayer().then(_player => {
-        if (_player.getMode() === 'lite') 
-        {
-          console.log('Player autorization: NO!!!' );
-         // myGameInstance.SendMessage('Auth', 'CheckAuth', false);
-         return "no";
-        }
-        else
-        {
-          console.log('Player autorization: YES!!!');
-          return "yes";
-          //myGameInstance.SendMessage('Auth', 'CheckAuth', true).catch(err => {
-        // ошибка при передаче в авторизацию положительного значения авторизации
-          //console.log('Error translate true in CheckAuth');
-      //});
-          setAuth();
-        }
-              }).catch(err => {
-        // Ошибка при инициализации объекта Player.
-          console.log('Error initPlayer in function getAutorization');
-          return "no";
-      });
     }
     //авторизация игрока
     function setAuth(){
